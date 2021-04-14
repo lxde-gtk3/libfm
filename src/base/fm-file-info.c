@@ -5,6 +5,7 @@
  *      Copyright 2009 Juergen Hoetzel <juergen@archlinux.org>
  *      Copyright 2017 Tsu Jan <tsujan2000@gmail.com>
  *      Copyright 2012-2018 Andriy Grytsenko (LStranger) <andrej@rep.kiev.ua>
+ *      Copyright 2019 Mahmoud Al-Qudsi <mqudsi@neosmart.net>
  *
  *      This file is a part of the Libfm library.
  *
@@ -1393,7 +1394,8 @@ gboolean fm_file_info_is_executable_type(FmFileInfo* fi)
                    which may be considered as a safe desktop entry path
                    then check if that is a shortcut to a native file
                    otherwise it is a link to a file under menu:// */
-                if (!g_str_has_prefix(fi->target, "/usr/share/"))
+                if (!g_str_has_prefix(fi->target, "/usr/share/") &&
+                    !g_str_has_prefix(fi->target, "/usr/local/share/"))
                 {
                     FmPath *target = fm_path_new_for_str(fi->target);
                     gboolean is_native = fm_path_is_native(target);

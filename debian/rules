@@ -21,6 +21,7 @@ CONFIGURE_OPTIONS += --with-gtk=3
 	dh ${@}
 
 override_dh_auto_configure:
+	autoreconf -fv
 	dh_auto_configure -- $(CONFIGURE_OPTIONS)
 
 override_dh_auto_install:

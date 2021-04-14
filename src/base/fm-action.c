@@ -1,7 +1,9 @@
 /*
  *      fm-action.c
  *
- *      Copyright 2014-2018 Andriy Grytsenko (LStranger) <andrej@rep.kiev.ua>
+ *      Copyright 2014-2021 Andriy Grytsenko (LStranger) <andrej@rep.kiev.ua>
+ *      Copyright 2020 Leonardo Citrolo <leoc@users.sourceforge.net>
+ *      Copyright 2020 wb9688 <wb9688@users.noreply.github.com>
  *
  *      This file is a part of the Libfm library.
  *
@@ -660,15 +662,12 @@ static GIcon * _fm_action_get_icon(GAppInfo *appinfo)
 
 struct ChildSetup
 {
-    char *display;
     char *sn_id;
 };
 
 static void child_setup(gpointer user_data)
 {
     struct ChildSetup* data = (struct ChildSetup*)user_data;
-    if (data->display)
-        g_setenv("DISPLAY", data->display, TRUE);
     if (data->sn_id)
         g_setenv("DESKTOP_STARTUP_ID", data->sn_id, TRUE);
 }
@@ -721,7 +720,6 @@ static gboolean _do_launch(FmAction *action, GAppLaunchContext *launch_context,
         GList *launched_files, *l;
         struct ChildSetup data;
 
-        data.display = NULL;
         data.sn_id = NULL;
         if (launch_context)
         {
@@ -731,9 +729,6 @@ static gboolean _do_launch(FmAction *action, GAppLaunchContext *launch_context,
                 launched_files = g_list_prepend(launched_files,
                                 fm_path_to_gfile(fm_file_info_get_path(l->data)));
             launched_files = g_list_reverse(launched_files);
-            data.display = g_app_launch_context_get_display(launch_context,
-                                                            G_APP_INFO(action),
-                                                            launched_files);
             if (action->use_sn)
                 data.sn_id = g_app_launch_context_get_startup_notify_id(launch_context,
                                                                         G_APP_INFO(action),
@@ -752,6 +747,7 @@ static gboolean _do_launch(FmAction *action, GAppLaunchContext *launch_context,
             if (data.sn_id)
                 g_app_launch_context_launch_failed(launch_context, data.sn_id);
         }
+        g_free(data.sn_id);
         g_strfreev(argv);
     }
 
@@ -1272,6 +1268,8 @@ static FmActionCondition *_g_key_file_get_conditions(GKeyFile *kf, const char *g
             c++, type = CONDITION_TYPE_COUNT_LESS;
         else if (c[0] == '>')
             c++, type = CONDITION_TYPE_COUNT_MORE;
+        else if (c[0] == '=')
+            c++, type = CONDITION_TYPE_COUNT;
         else
             type = CONDITION_TYPE_COUNT;
         while (c[0] == ' ') c++;
@@ -1872,7 +1870,7 @@ static gboolean _matches_cond(FmFileInfoList *files, FmFileInfo *location,
                 {
                     if (strncmp(&tst[1], "all/", 4) == 0)
                     {
-                        if (strcmp(&tst[5], "allfiles"))
+                        if (strcmp(&tst[5], "allfiles") == 0)
                         {
                             for (l = flist; match && l; l = l->next)
                                 if (S_ISREG(fm_file_info_get_mode(l->data)))
@@ -1902,7 +1900,7 @@ static gboolean _matches_cond(FmFileInfoList *files, FmFileInfo *location,
                 {
                     if (strncmp(tst, "all/", 4) == 0)
                     {
-                        if (strcmp(&tst[4], "allfiles"))
+                        if (strcmp(&tst[4], "allfiles") == 0)
                         {
                             for (l = flist; l; l = l->next)
                                 if (!S_ISREG(fm_file_info_get_mode(l->data)))

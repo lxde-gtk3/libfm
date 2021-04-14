@@ -3,6 +3,7 @@
  *
  * Copyright 2010 - 2013 Hong Jen Yee (PCMan) <pcman.tw@gmail.com>
  * Copyright 2012-2018 Andriy Grytsenko (LStranger) <andrej@rep.kiev.ua>
+ * Copyright 2020 Ingo Brückl <ib@wupperonline.de>
  *
  * This file is a part of the Libfm library.
  *
@@ -746,7 +747,7 @@ guint fm_thumbnail_loader_get_size(FmThumbnailLoader* req)
 /* in main loop */
 void _fm_thumbnail_loader_init()
 {
-    thumb_dir = g_build_filename(fm_get_home_dir(), ".thumbnails", NULL);
+    thumb_dir = g_build_filename(g_get_user_cache_dir(), "thumbnails", NULL);
     hash = g_hash_table_new((GHashFunc)fm_path_hash, (GEqualFunc)fm_path_equal);
 #if !GLIB_CHECK_VERSION(2, 32, 0)
     lock_ptr = g_mutex_new();

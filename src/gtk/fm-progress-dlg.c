@@ -4,6 +4,7 @@
  *      Copyright 2009 PCMan <pcman.tw@gmail.com>
  *      Copyright 2012-2015 Andriy Grytsenko (LStranger) <andrej@rep.kiev.ua>
  *      Copyright 2017 Nathan Osman <nathan@quickmediasolutions.com>
+ *      Copyright 2019 Simon Long <simon@raspberrypi.org>
  *
  *      This program is free software; you can redistribute it and/or modify
  *      it under the terms of the GNU General Public License as published by
@@ -506,7 +507,7 @@ static void on_cur_file(FmFileOpsJob* job, const char* cur_file, FmProgressDispl
 
 static void on_percent(FmFileOpsJob* job, guint percent, FmProgressDisplay* data)
 {
-    data->data_transferred_size = job->finished;
+    data->data_transferred_size = job->finished + job->current_file_finished;
     data->data_total_size = job->total;
     data->percent = percent;
     if(data->dlg && data->update_timeout == 0)

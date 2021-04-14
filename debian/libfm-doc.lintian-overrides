@@ -1,0 +1,2 @@
+# This is wrong lintian assumption.
+package-contains-documentation-outside-usr-share-doc usr/share/gtk-doc/html/libfm*

@@ -1,8 +1,23 @@
-libfm (1.3.1-gtk3) unstable; urgency=medium
-  * Porting gtk3
-  
- -- Ali Riza Keskin <parduscix@yandex.ru> 
+libfm (99.1.3.2-gtk3) unstable; urgency=medium
 
+  * Merging upstream version 1.3.2.
+
+ -- Ali Riza Keskin <parduscix@yandex.ru> Sat, 06 Feb 2021 00:11:12 +0200
+
+libfm (1.3.2-1) unstable; urgency=medium
+
+  * Merging upstream version 1.3.2 (Closes: #922011, #932461).
+  * Reposition Vcs-* to the Debian Salsa.
+  * Bump Standards-Version to 4.5.1.
+  * Updating debian/copyright file.
+  * Updating lintian override for usr/lib/x86_64-linux-gnu/libfm-extra.so.4.1.3.
+  * Adding lintian override for usr/share/gtk-doc/html/libfm*
+  * Adding lintian override for usr/lib/*/libfm/modules/gtk-menu-trash.so.
+  * Adding 'Rules-Requires-Root: no' header.
+  * Bump debhelper to version 12.
+  * Drop obsoleted *-dbg packages.
+
+ -- Andriy Grytsenko <andrej@rep.kiev.ua>  Sat, 06 Feb 2021 00:11:12 +0200
 
 libfm (1.3.1-1) unstable; urgency=medium
 
